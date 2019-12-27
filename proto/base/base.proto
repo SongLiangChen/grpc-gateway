@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "base";
+
+package grpc.gateway.proto.base;
+
+
+message BaseRequestParams {
+    string version = 1;
+    string lang = 2;
+    string ip = 3;
+    string device = 4;
+    string host = 5;
+    string requestId = 6;
+}

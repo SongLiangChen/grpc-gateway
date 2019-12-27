@@ -1,0 +1,178 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "user-service/user-service.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/01/user/getInfo/{userId}": {
+      "get": {
+        "operationId": "GetUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/serviceUserInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "baseParams.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.lang",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.ip",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.device",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.host",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.requestId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/01/user/getInfo/{userId}/{baseParams.version}": {
+      "get": {
+        "operationId": "GetUserInfo2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/serviceUserInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "baseParams.version",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.lang",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.ip",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.device",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.host",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "baseParams.requestId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "baseBaseRequestParams": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "requestId": {
+          "type": "string"
+        }
+      }
+    },
+    "serviceUserInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nickName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

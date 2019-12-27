@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "user-service";
+
+package grpc.gateway.proto.user.service;
+
+import "google/api/annotations.proto";
+import "grpc-gateway/proto/base/base.proto";
+
+message UserId {
+    int64 userId = 1;
+
+    base.BaseRequestParams baseParams = 2;
+}
+
+message UserInfo {
+    int64 id = 1;
+    int64 userId = 2;
+    string nickName = 3;
+}
+
+service UserService {
+    rpc GetUserInfo(UserId) returns (UserInfo) {
+        option (google.api.http) = {
+			get: "/01/user/getInfo/{userId=*}"
+			additional_bindings {
+                get: "/01/user/getInfo/{userId}/{baseParams.version}"
+            }
+		};
+    }
+}
