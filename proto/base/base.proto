@@ -2,14 +2,20 @@ syntax = "proto3";
 
 option go_package = "base";
 
-package grpc.gateway.proto.base;
+package base;
 
-
-message BaseRequestParams {
+message CommonParam {
     string version = 1;
     string lang = 2;
     string ip = 3;
     string device = 4;
     string host = 5;
     string requestId = 6;
+}
+
+message Session {
+    bool update = 1;
+    int64 userId = 2;
+    string nickName = 3;
+    string loginAccount = 4;
 }

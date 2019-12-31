@@ -1,57 +1,40 @@
 package main
 
 import (
-	"context"
-	"grpc-gateway/handler"
+	"github.com/gin-gonic/gin"
+	"grpc-gateway/common"
+	"grpc-gateway/config"
+	"grpc-gateway/gateway"
 	"grpc-gateway/middleware"
-	"net/http"
-
-	_ "grpc-gateway/handler/echo-service-handler"
-	_ "grpc-gateway/handler/user-service-handler"
-)
-
-type ServerEndpoint struct {
-	Key     string
-	Network string
-	Addr    string
-}
-
-var (
-	grpcServerEndpoint = []ServerEndpoint{
-		{
-			"01",
-			"tcp",
-			"127.0.0.1:18080",
-		},
-	}
+	"grpc-gateway/proto/user-service"
 )
 
 func main() {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	// gin.SetMode(gin.ReleaseMode)
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/swagger/", middleware.SwaggerServer())
-
-	for _, ep := range grpcServerEndpoint {
-		h, err := handler.NewHandler(ep.Key, ctx, ep.Network, ep.Addr, nil,
-			middleware.Recover, middleware.Cors())
-		if err != nil {
-			println(err.Error())
-			return
-		}
-
-		mux.Handle("/"+ep.Key+"/", h)
-	}
-
-	s := &http.Server{
-		Addr:    ":8080",
-		Handler: mux,
-	}
-
-	if err := s.ListenAndServe(); err != nil {
+	if err := config.InitConfig(); err != nil {
 		println(err.Error())
+		return
 	}
+	cnf := config.GetConfig()
+
+	common.ConfigLogger(cnf.LogCnf.Dir, cnf.LogCnf.Name, cnf.LogCnf.KeepDay, cnf.LogCnf.RateHours)
+
+	gw := gateway.NewGateway()
+
+	gw.HandleFunc("/swagger/", middleware.SwaggerServer())
+
+	if err := gw.RegisterEndServer(&gateway.EndServerConfig{
+		RelativePath: "/01/",
+		Network:      "tcp",
+		Addr:         "127.0.0.1:18080",
+		// Opts:         []runtime.ServeMuxOption{runtime.WithForwardResponseOption(forwardResponseOption)},
+		Handlers:     []gin.HandlerFunc{middleware.Recover, middleware.Cors()},
+		RegisterFunc: user_service.RegisterUserServiceHandler,
+	}); err != nil {
+		println(err.Error())
+		return
+	}
+
+	defer gw.Close()
+
+	gw.Run(cnf.AppCnf.Addr)
 }

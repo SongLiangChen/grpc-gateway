@@ -11,121 +11,25 @@
     "application/json"
   ],
   "paths": {
-    "/01/user/getInfo/{userId}": {
-      "get": {
+    "/01/user/getInfo": {
+      "post": {
         "operationId": "GetUserInfo",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/serviceUserInfo"
+              "$ref": "#/definitions/serviceUserInfoResp"
             }
           }
         },
         "parameters": [
           {
-            "name": "userId",
-            "in": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "baseParams.version",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.lang",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.ip",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.device",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.host",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.requestId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UserService"
-        ]
-      }
-    },
-    "/01/user/getInfo/{userId}/{baseParams.version}": {
-      "get": {
-        "operationId": "GetUserInfo2",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/serviceUserInfo"
+              "$ref": "#/definitions/serviceUserInfoReq"
             }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "baseParams.version",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.lang",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.ip",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.device",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.host",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "baseParams.requestId",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -135,7 +39,7 @@
     }
   },
   "definitions": {
-    "baseBaseRequestParams": {
+    "baseCommonParam": {
       "type": "object",
       "properties": {
         "version": {
@@ -158,7 +62,33 @@
         }
       }
     },
-    "serviceUserInfo": {
+    "baseSession": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "loginAccount": {
+          "type": "string"
+        }
+      }
+    },
+    "serviceUserInfoReq": {
+      "type": "object",
+      "properties": {
+        "commonParam": {
+          "$ref": "#/definitions/baseCommonParam"
+        },
+        "session": {
+          "$ref": "#/definitions/baseSession"
+        }
+      }
+    },
+    "serviceUserInfoResp": {
       "type": "object",
       "properties": {
         "id": {
@@ -171,6 +101,9 @@
         },
         "nickName": {
           "type": "string"
+        },
+        "session": {
+          "$ref": "#/definitions/baseSession"
         }
       }
     }

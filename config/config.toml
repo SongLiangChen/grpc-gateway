@@ -1,0 +1,17 @@
+[appCnf]
+    addr = ":8080"
+
+[logCnf]
+    dir = "/mnt/f/workspace/godev/src/grpc-gateway/logs"
+    name = "gateway.log"
+    keepDay = 30
+    rateHours = 24
+
+[sessionCnf]
+    cookieName = "gw_session_id"
+    enableSetCookie = true
+    maxLifeTime = 3600
+    secure = false
+    providerType = "redis"
+    providerConfig = "127.0.0.1:6379,1024,,1" # addr:port,maxConn,pwd,dbNum
+    cookieLeftTime = 3600

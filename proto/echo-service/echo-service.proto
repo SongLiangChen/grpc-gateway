@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "echo-service";
 
-package grpc.gateway.proto.echo.service;
+package echo.service;
 
 import "google/api/annotations.proto";
 
